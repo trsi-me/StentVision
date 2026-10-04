@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}لوحة التحكم - StentVision{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <h2 class="page-title">لوحة التحكم</h2>
+
+    <section class="readings-grid">
+        <div class="reading-card">
+            <div class="reading-card-header">
+                <span class="reading-card-label">تدفق الدم</span>
+                <span class="reading-card-unit">mL/min</span>
+            </div>
+            <div class="reading-card-value" id="flow-rate">--</div>
+        </div>
+        <div class="reading-card">
+            <div class="reading-card-header">
+                <span class="reading-card-label">الضغط P1</span>
+                <span class="reading-card-unit">mmHg</span>
+            </div>
+            <div class="reading-card-value" id="p1">--</div>
+        </div>
+        <div class="reading-card">
+            <div class="reading-card-header">
+                <span class="reading-card-label">الضغط P2</span>
+                <span class="reading-card-unit">mmHg</span>
+            </div>
+            <div class="reading-card-value" id="p2">--</div>
+        </div>
+        <div class="reading-card">
+            <div class="reading-card-header">
+                <span class="reading-card-label">فرق الضغط ΔP</span>
+                <span class="reading-card-unit">mmHg</span>
+            </div>
+            <div class="reading-card-value" id="delta-p">--</div>
+        </div>
+    </section>
+
+    <section class="ai-section">
+        <h3 class="section-title">تقييم الذكاء الاصطناعي للخطر</h3>
+        <div class="gauge-container">
+            <div class="gauge" id="risk-gauge">
+                <div class="gauge-fill" id="gauge-fill"></div>
+                <div class="gauge-value" id="gauge-value">0%</div>
+            </div>
+            <div class="risk-status" id="risk-status">Normal</div>
+            <p class="risk-description" id="risk-description">لا توجد قراءات حتى الآن.</p>
+        </div>
+        <button class="btn btn-primary" id="simulate-btn">محاكاة قراءة</button>
+    </section>
+
+    <section class="charts-section">
+        <div class="chart-box">
+            <h4 class="chart-title">اتجاه تدفق الدم</h4>
+            <canvas id="flow-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h4 class="chart-title">اتجاه فرق الضغط</h4>
+            <canvas id="pressure-chart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h4 class="chart-title">اتجاه نسبة الخطر</h4>
+            <canvas id="risk-chart"></canvas>
+        </div>
+    </section>
+
+    <section class="alerts-section">
+        <h3 class="section-title">سجل التنبيهات</h3>
+        <div class="alerts-table-wrap">
+            <table class="alerts-table">
+                <thead>
+                    <tr>
+                        <th>الوقت</th>
+                        <th>المستوى</th>
+                        <th>الوصف</th>
+                        <th>الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="alerts-body">
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

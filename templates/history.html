@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}السجل - StentVision{% endblock %}
+{% block content %}
+<div class="history-page">
+    <h2 class="page-title">سجل القراءات</h2>
+    <div class="history-table-wrap">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>تدفق الدم</th>
+                    <th>P1</th>
+                    <th>P2</th>
+                    <th>فرق الضغط</th>
+                    <th>الوقت</th>
+                </tr>
+            </thead>
+            <tbody id="history-body">
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/readings?limit=50')
+        .then(r => r.json())
+        .then(data => {
+            const tbody = document.getElementById('history-body');
+            data.forEach((r, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${i + 1}</td>
+                    <td>${r.flow_rate}</td>
+                    <td>${r.p1}</td>
+                    <td>${r.p2}</td>
+                    <td>${r.delta_p}</td>
+                    <td>${r.created_at || '--'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">لا توجد قراءات</td></tr>';
+            }
+        });
+});
+</script>
+{% endblock %}

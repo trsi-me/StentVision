@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}الإعدادات - StentVision{% endblock %}
+{% block content %}
+<div class="settings-page">
+    <h2 class="page-title">الإعدادات</h2>
+    <div class="settings-card">
+        <h3>إعادة تدريب النموذج</h3>
+        <p>إعادة تدريب نموذج الذكاء الاصطناعي على البيانات النموذجية.</p>
+        <button class="btn btn-primary" id="train-btn">تدريب النموذج</button>
+        <div id="train-result"></div>
+    </div>
+    <div class="settings-card">
+        <h3>ربط الهاردوير</h3>
+        <p>لتوصيل Arduino أو ESP32، راجع ملف README.md للحصول على التعليمات ومثال JSON.</p>
+        <code>/api/reading</code>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+document.getElementById('train-btn').addEventListener('click', function() {
+    const result = document.getElementById('train-result');
+    result.textContent = 'جاري التدريب...';
+    fetch('/api/train', { method: 'POST' })
+        .then(r => r.json())
+        .then(data => {
+            result.textContent = data.success ? 'تم التدريب بنجاح' : 'خطأ: ' + data.error;
+            result.className = data.success ? 'success' : 'error';
+        });
+});
+</script>
+{% endblock %}

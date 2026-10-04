@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}التنبيهات - StentVision{% endblock %}
+{% block content %}
+<div class="alerts-page">
+    <h2 class="page-title">التنبيهات</h2>
+    <div class="alerts-list" id="alerts-list">
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/alerts')
+        .then(r => r.json())
+        .then(data => {
+            const container = document.getElementById('alerts-list');
+            data.forEach(a => {
+                const card = document.createElement('div');
+                card.className = 'alert-card severity-' + a.severity;
+                card.innerHTML = `
+                    <div class="alert-content">
+                        <div class="alert-card-header">
+                            <div class="alert-time">${a.created_at || '--'}</div>
+                            <div class="alert-severity">${a.severity === 'high' ? 'عالي' : a.severity === 'medium' ? 'متوسط' : 'منخفض'}</div>
+                        </div>
+                        <div class="alert-desc">${a.description || ''}</div>
+                        <div class="alert-action">${a.action || ''}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            if (data.length === 0) {
+                container.innerHTML = '<p class="no-data">لا توجد تنبيهات</p>';
+            }
+        });
+});
+</script>
+{% endblock %}

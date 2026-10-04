@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}StentVision{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="logo-area">
+            <img src="{{ url_for('static', filename='assets/images/Logo.jpeg') }}" alt="StentVision" class="logo">
+            <h1 class="brand">StentVision</h1>
+        </div>
+        <nav class="nav">
+            <a href="/" class="nav-link">لوحة التحكم</a>
+            <a href="/history" class="nav-link">السجل</a>
+            <a href="/alerts" class="nav-link">التنبيهات</a>
+            <a href="/settings" class="nav-link">الإعدادات</a>
+        </nav>
+    </header>
+    <main class="main">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
